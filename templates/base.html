@@ -1,29 +1,75 @@
 {% load static tailwind_tags %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <title>{% block title %}Petrol Pump Payments{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
     {% tailwind_css %}
+    <style>
+      /* For smooth underline animation on nav links */
+      a.nav-link {
+        position: relative;
+        transition: color 0.3s ease;
+      }
+      a.nav-link::after {
+        content: "";
+        position: absolute;
+        width: 0;
+        height: 2px;
+        display: block;
+        margin-top: 4px;
+        right: 0;
+        background: #bef264; /* lime-300 */
+        transition: width 0.3s ease;
+        -webkit-transition: width 0.3s ease;
+        -moz-transition: width 0.3s ease;
+      }
+      a.nav-link:hover::after {
+        width: 100%;
+        left: 0;
+        background: #bef264;
+      }
+    </style>
 </head>
-<body class="bg-slate-100 text-slate-900 min-h-screen">
+<body class="bg-slate-100 text-slate-900 min-h-screen flex flex-col">
 
-    <nav class="bg-emerald-600 p-4 text-white shadow-lg">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-semibold tracking-wide">⛽ Petrol Pump Payments</h1>
-            <ul class="flex space-x-6 text-white font-medium">
-                <li><a href="{% url 'home' %}" class="hover:text-lime-300 transition">Home</a></li>
-                <li><a href="{% url 'generate_qr' %}" class="hover:text-lime-300 transition">Generate QR</a></li>
-                <li><a href="{% url 'scan_qr' %}" class="hover:text-lime-300 transition">Scan QR</a></li>
+    <nav class="bg-emerald-600 p-4 shadow-lg">
+        <div class="container mx-auto flex flex-wrap md:flex-nowrap justify-between items-center">
+            <a href="{% url 'home' %}" class="flex items-center text-white font-extrabold text-2xl tracking-wider select-none">
+                ⛽ Petrol Pump Payments
+            </a>
+            <button id="nav-toggle" class="md:hidden text-white focus:outline-none" aria-label="Toggle navigation">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                    <path d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+            <ul id="nav-menu" class="hidden md:flex space-x-8 text-white font-semibold mt-4 md:mt-0">
+                <li><a href="{% url 'home' %}" class="nav-link hover:text-lime-300">Home</a></li>
+                <li><a href="{% url 'generate_qr' %}" class="nav-link hover:text-lime-300">Generate QR</a></li>
+                <li><a href="{% url 'scan_qr' %}" class="nav-link hover:text-lime-300">Scan QR</a></li>
             </ul>
         </div>
     </nav>
 
-    <main class="container mx-auto mt-10 px-6">
+    <main class="container mx-auto flex-grow mt-10 px-6 sm:px-10">
         {% block content %}{% endblock %}
     </main>
+
+    <footer class="bg-emerald-600 text-white p-4 text-center text-sm select-none mt-10">
+        &copy; {{ now|date:"Y" }} Petrol Pump Payments. All rights reserved.
+    </footer>
+
+    <script>
+      // Simple mobile nav toggle
+      const navToggle = document.getElementById('nav-toggle');
+      const navMenu = document.getElementById('nav-menu');
+
+      navToggle.addEventListener('click', () => {
+        navMenu.classList.toggle('hidden');
+      });
+    </script>
 
 </body>
 </html>
