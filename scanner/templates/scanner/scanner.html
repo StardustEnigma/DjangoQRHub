@@ -41,6 +41,12 @@
                 📷 Scan
             </button>
         </form>
+
+        {% if result %}
+            <div class="mt-6 p-4 rounded-lg {% if '✅' in result %}bg-green-100 text-green-700{% else %}bg-red-100 text-red-700{% endif %}">
+                <strong>Result:</strong> {{ result }}
+            </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
